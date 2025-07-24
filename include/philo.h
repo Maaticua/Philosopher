@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:32 by macaruan          #+#    #+#             */
-/*   Updated: 2025/07/23 14:59:28 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:00:39 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ int						init_philos(t_data *data);
 int						parse_args(t_data *data, int argc, char **argv);
 
 // routine.c
-int	start_threads(t_data *data);
-void	*philo_routine(void *arg);
+int						start_threads(t_data *data);
+void					*philo_routine(void *arg);
+
+// monitor.c
+void					*monitor_routine(void *arg);
+int						start_monitor(t_data *data);
 
 #endif

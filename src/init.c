@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:37 by macaruan          #+#    #+#             */
-/*   Updated: 2025/07/23 14:40:50 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:06:36 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	parse_args(t_data *data, int argc, char **argv)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
-	data->max_meals = (argc == 6) ? ft_atoi(argv[5]) : -1;
+	if (argc == 6)
+		data->max_meals = ft_atoi(argv[5]);
+	else
+		data->max_meals = -1;
 	data->stop = 0;
 	if (data->nb_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
 		|| data->time_to_sleep <= 0 || (argc == 6 && data->max_meals <= 0))
@@ -56,6 +59,7 @@ int	init_mutexes(t_data *data)
 		return (1);
 	return (0);
 }
+
 int	init_philos(t_data *data)
 {
 	int	i;

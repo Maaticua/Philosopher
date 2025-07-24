@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:47 by macaruan          #+#    #+#             */
-/*   Updated: 2025/07/24 13:36:37 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:06:46 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ long	get_time(void)
 		return (-1);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
+
 void	ft_usleep(int duration)
 {
 	long	start;
@@ -28,6 +29,7 @@ void	ft_usleep(int duration)
 	while ((get_time() - start) < duration)
 		usleep(500);
 }
+
 void	print_state(t_philo *philo, const char *msg)
 {
 	long	timestamp;
@@ -40,6 +42,7 @@ void	print_state(t_philo *philo, const char *msg)
 	}
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
+
 void	take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
@@ -57,6 +60,7 @@ void	take_forks(t_philo *philo)
 		print_state(philo, "took a fork");
 	}
 }
+
 void	release_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->right_fork);
