@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:37 by macaruan          #+#    #+#             */
-/*   Updated: 2025/07/23 14:28:38 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:40:50 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static int	ft_atoi(const char *str)
 {
-	long	nb = 0;
+	long	nb;
 
+	nb = 0;
 	while (*str >= '0' && *str <= '9')
 		nb = nb * 10 + (*str++ - '0');
 	return ((int)nb);
@@ -35,7 +36,6 @@ int	parse_args(t_data *data, int argc, char **argv)
 		|| data->time_to_sleep <= 0 || (argc == 6 && data->max_meals <= 0))
 		return (1);
 	return (0);
-
 }
 
 int	init_mutexes(t_data *data)
@@ -66,7 +66,7 @@ int	init_philos(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		data->philos[i].id = i +1;
+		data->philos[i].id = i + 1;
 		data->philos[i].nb_meals = 0;
 		data->philos[i].last_meal = 0;
 		data->philos[i].left_fork = &data->forks[i];

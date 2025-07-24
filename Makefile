@@ -8,7 +8,7 @@ OBJ = $(SRC:.c=.o)
 INCLUDE = -Iinclude
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) 
 
 all: $(NAME)
 

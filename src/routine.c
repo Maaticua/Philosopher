@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:29 by macaruan          #+#    #+#             */
-/*   Updated: 2025/07/23 14:34:18 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/07/24 11:52:03 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ void	*philo_routine(void *arg)
 	while (1)
 	{
 		if (philo->data->stop)
-			break;
+			break ;
 		take_forks(philo);
 		print_state(philo, "is eating");
 		philo->last_meal = get_time();
 		ft_usleep(philo->data->time_to_eat);
-		release_fork(philo);
+		release_forks(philo);
 		philo->nb_meals++;
 		if (philo->data->max_meals > 0
 			&& philo->nb_meals >= philo->data->max_meals)
-			break;
+			break ;
 		print_state(philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep);
 		print_state(philo, "is thinking");
