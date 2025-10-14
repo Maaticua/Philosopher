@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:40 by macaruan          #+#    #+#             */
-/*   Updated: 2025/07/24 14:15:01 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/10/14 12:50:17 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@ int	main(int ac, char **av)
 	t_data	data;
 
 	if (parse_args(&data, ac, av) != 0)
-		return (write(2, "Error: invalid args\n", 22), 1);
+		return (write(2, "Error: invalid args\n", 21), 1);
 	if (init_mutexes(&data) != 0)
-		return (write(2, "Error: mutex init fail\n", 25), 1);
+		return (write(2, "Error: mutex init fail\n", 24), 1);
 	if (init_philos(&data) != 0)
-		return (write(2, "Error: philos init fail\n", 26), 1);
+		return (write(2, "Error: philos init fail\n", 25), 1);
 	if (start_threads(&data) != 0)
-		return (write(2, "Error: thread creation fail\n", 30), 1);
+		return (write(2, "Error: thread creation fail\n", 29), 1);
 	if (start_monitor(&data) != 0)
-		return (write(2, "Error: monitor creation fail\n", 30), 1);
+		return (write(2, "Error: monitor creation fail\n", 29), 1);
 	join_threads(&data);
-	// clean
+	clean(&data);
 	return (0);
 }
