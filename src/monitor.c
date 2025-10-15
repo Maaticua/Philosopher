@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:43 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/14 13:55:52 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/15 10:46:48 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*monitor_routine(void *arg)
 			data->stop = 1;
 			return (NULL);
 		}
-		ft_usleep(1000);
+		usleep(1000);
 	}
 	return (NULL);
 }

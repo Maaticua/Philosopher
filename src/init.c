@@ -6,11 +6,31 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:37 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/14 13:26:47 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/15 11:00:46 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+static int is_val_nbr(const char *str)
+{
+	int i;
+
+	if (!str || !str[0])
+		return(0);
+	i = 0;
+	if (str[i] == '+')
+		i++;
+	if (!str[i])
+		return(0);
+	while(str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static int ft_atoi(const char *str)
 {
@@ -24,8 +44,17 @@ static int ft_atoi(const char *str)
 
 int parse_args(t_data *data, int argc, char **argv)
 {
+	int i;
+
 	if (argc != 5 && argc != 6)
 		return (1);
+	i = 1;
+	while(i < argc)
+	{
+		if (!is_val_nbr(argv[i]))
+			return (1);
+		i++;
+	}
 	data->nb_philo = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
