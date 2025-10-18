@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:32 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/17 11:48:42 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/18 15:22:05 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_data
 	long start_time;
 	pthread_mutex_t *forks;
 	pthread_mutex_t print_mutex;
+	pthread_mutex_t stop_mutex;
 	t_philo *philos;
 	pthread_t	monitor_thread;
 } t_data;
@@ -63,5 +64,14 @@ void *philo_routine(void *arg);
 // monitor.c
 void *monitor_routine(void *arg);
 int start_monitor(t_data *data);
+
+// utils.c
+long	get_time(void);
+void	ft_usleep(int duration);
+void	print_state(t_philo *philo, const char *msg);
+void	take_forks(t_philo *philo);
+void	release_forks(t_philo *philo);
+int		check_stop(t_data *data);
+void	set_stop(t_data *data, int value);
 
 #endif

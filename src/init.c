@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:37 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/17 11:28:48 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/18 15:14:31 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,15 @@ int init_mutexes(t_data *data)
 		free(data->forks);
 		return (1);
 	}
+	if (pthread_mutex_init(&data->stop_mutex, NULL) != 0)
+	{
+		pthread_mutex_destroy(&data->print_mutex);
+		i = data->nb_philo;
+		while (--i >= 0)
+			pthread_mutex_destroy(&data->forks[i]);
+		free(data->forks);
+		return(1);
+	}
 	return (0);
 }
 
@@ -155,4 +164,5 @@ void clean(t_data *data)
 		data->forks = NULL;
 	}
 	pthread_mutex_destroy(&data->print_mutex);
+	pthread_mutex_destroy(&data->stop_mutex);
 }

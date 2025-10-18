@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:40 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/17 12:45:22 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/18 15:25:55 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int ac, char **av)
 	}
 	if (start_monitor(&data) != 0)
 	{
-		data.stop = 1;
+		set_stop(&data, 1);
 		join_threads(&data);
 		clean(&data);
 		return (write(2, "Error: monitor creation fail\n", 29), 1);

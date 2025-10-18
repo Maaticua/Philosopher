@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:43 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/17 12:02:01 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/18 15:25:35 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*monitor_routine(void *arg)
 	int	all_ate;
 
 	data = (t_data *)arg;
-	while (!data->stop)
+	while (!check_stop(data))
 	{
 		i = 0;
 		all_ate = 1;
@@ -43,7 +43,7 @@ void	*monitor_routine(void *arg)
 				pthread_mutex_lock(&data->print_mutex);
 				printf("%ld %d died\n", now - data->start_time, data->philos[i].id);
 				pthread_mutex_unlock(&data->print_mutex);
-				data->stop = 1;
+				set_stop(data, 1);
 				return (NULL);
 			}
 			if (data->max_meals > 0 && data->philos[i].nb_meals < data->max_meals)
@@ -53,7 +53,7 @@ void	*monitor_routine(void *arg)
 		}
 		if (data->max_meals > 0 && all_ate)
 		{
-			data->stop = 1;
+			set_stop(data, 1);
 			return (NULL);
 		}
 		usleep(1000);

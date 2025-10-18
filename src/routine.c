@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:29 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/18 14:43:30 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/18 15:24:29 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*philo_routine(void *arg)
 	if (philo->data->nb_philo == 1)
 	{
 		print_state(philo, "has taken a fork");
-		while (!philo->data->stop)
+		while (!check_stop(philo->data))
 			ft_usleep(100);
 		return (NULL);
 	}
@@ -57,12 +57,12 @@ void	*philo_routine(void *arg)
 	}
 	while (1)
 	{
-		if (philo->data->stop)
+		if (check_stop(philo->data))
 			break ;
 
 		take_forks(philo);
 
-		if (philo->data->stop)
+		if (check_stop(philo->data))
 		{
 			release_forks(philo);
 			break;
@@ -83,12 +83,12 @@ void	*philo_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->meal_mutex);
-		if (philo->data->stop)
+		if (check_stop(philo->data))
 			break;
 
 		print_state(philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep);
-		if (philo->data->stop)
+		if (check_stop(philo->data))
 			break;
 		print_state(philo, "is thinking");
 	}
