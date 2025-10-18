@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:32 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/14 13:24:57 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/17 11:48:42 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_data
 	pthread_mutex_t *forks;
 	pthread_mutex_t print_mutex;
 	t_philo *philos;
+	pthread_t	monitor_thread;
 } t_data;
 
 // init.c

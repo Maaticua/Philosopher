@@ -6,7 +6,7 @@
 /*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:43 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/15 10:46:48 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/17 12:02:01 by maato            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	start_monitor(t_data *data)
 {
-	pthread_t	monitor;
+	// pthread_t	monitor;
 
-	if (pthread_create(&monitor, NULL, &monitor_routine, data) != 0)
+	if (pthread_create(&data->monitor_thread, NULL, &monitor_routine, data) != 0)
 		return (1);
-	pthread_detach(monitor);
+	// pthread_detach(monitor);
 	return (0);
 }
 void	*monitor_routine(void *arg)
