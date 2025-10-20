@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:37 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/18 15:14:31 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/20 12:45:33 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-static int is_val_nbr(const char *str)
+static int	is_val_nbr(const char *str)
 {
-	int i;
+	int	i;
 
 	if (!str || !str[0])
-		return(0);
+		return (0);
 	i = 0;
 	if (str[i] == '+')
 		i++;
 	if (!str[i])
-		return(0);
-	while(str[i])
+		return (0);
+	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
 			return (0);
@@ -32,9 +32,9 @@ static int is_val_nbr(const char *str)
 	return (1);
 }
 
-static int ft_atoi(const char *str)
+static int	ft_atoi(const char *str)
 {
-	long nb;
+	long	nb;
 
 	nb = 0;
 	while (*str >= '0' && *str <= '9')
@@ -42,14 +42,14 @@ static int ft_atoi(const char *str)
 	return ((int)nb);
 }
 
-int parse_args(t_data *data, int argc, char **argv)
+int	parse_args(t_data *data, int argc, char **argv)
 {
-	int i;
+	int	i;
 
 	if (argc != 5 && argc != 6)
 		return (1);
 	i = 1;
-	while(i < argc)
+	while (i < argc)
 	{
 		if (!is_val_nbr(argv[i]))
 			return (1);
@@ -64,14 +64,15 @@ int parse_args(t_data *data, int argc, char **argv)
 	else
 		data->max_meals = -1;
 	data->stop = 0;
-	if (data->nb_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0 || data->time_to_sleep <= 0 || (argc == 6 && data->max_meals <= 0))
+	if (data->nb_philo <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
+		|| data->time_to_sleep <= 0 || (argc == 6 && data->max_meals <= 0))
 		return (1);
 	return (0);
 }
 
-int init_mutexes(t_data *data)
+int	init_mutexes(t_data *data)
 {
-	int i;
+	int	i;
 
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 	if (!data->forks)
@@ -84,7 +85,7 @@ int init_mutexes(t_data *data)
 			while (--i >= 0)
 				pthread_mutex_destroy(&data->forks[i]);
 			free(data->forks);
-			return(1);
+			return (1);
 		}
 		i++;
 	}
@@ -102,14 +103,14 @@ int init_mutexes(t_data *data)
 		while (--i >= 0)
 			pthread_mutex_destroy(&data->forks[i]);
 		free(data->forks);
-		return(1);
+		return (1);
 	}
 	return (0);
 }
 
-int init_philos(t_data *data)
+int	init_philos(t_data *data)
 {
-	int i;
+	int	i;
 
 	data->philos = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!data->philos)
@@ -123,7 +124,6 @@ int init_philos(t_data *data)
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->nb_philo];
 		data->philos[i].data = data;
-
 		if (pthread_mutex_init(&data->philos[i].meal_mutex, NULL) != 0)
 		{
 			while (--i >= 0)
@@ -135,9 +135,9 @@ int init_philos(t_data *data)
 	}
 	return (0);
 }
-void clean(t_data *data)
+void	clean(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (!data)
 		return ;

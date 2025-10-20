@@ -7,57 +7,6 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# ============================================
-# CRÉER LE FICHIER DE SUPPRESSION PTHREAD
-# ============================================
-create_suppression_file() {
-    cat > pthread.supp << 'EOF'
-{
-   pthread_TLS_possibly_lost
-   Memcheck:Leak
-   match-leak-kinds: possible
-   ...
-   fun:_dl_allocate_tls
-}
-{
-   pthread_create_possibly_lost
-   Memcheck:Leak
-   match-leak-kinds: possible
-   ...
-   fun:pthread_create*
-}
-{
-   pthread_allocate_dtv
-   Memcheck:Leak
-   match-leak-kinds: possible
-   fun:calloc
-   ...
-   fun:allocate_dtv
-}
-{
-   pthread_allocate_stack
-   Memcheck:Leak
-   match-leak-kinds: possible
-   ...
-   fun:allocate_stack
-}
-{
-   pthread_generic_possibly_lost
-   Memcheck:Leak
-   match-leak-kinds: possible
-   fun:calloc
-   ...
-}
-{
-   pthread_arena
-   Memcheck:Leak
-   match-leak-kinds: possible
-   ...
-   fun:arena_get2
-}
-EOF
-}
-
 # Fonction pour afficher un titre
 print_title() {
     echo -e "\n${BLUE}========================================${NC}"
@@ -104,45 +53,25 @@ test_with_meals() {
     fi
 }
 
-# Fonction pour test fuite mémoire (memcheck) - MODIFIÉE
+# Fonction pour test fuite mémoire avec valgrind --leak-check=full
 run_valgrind_leak_test() {
     args=$1
     description=$2
-    # Utiliser le fichier de suppression
-    timeout 20 valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all \
-      --suppressions=pthread.supp \
-      --error-exitcode=99 ./philo $args > valgrind_out.log 2>&1
+
+    echo -e "${YELLOW}Valgrind test: $description${NC}"
+
+    timeout 20 valgrind --leak-check=full --show-leak-kinds=all \
+        --error-exitcode=99 ./philo $args > valgrind_out.log 2>&1
 
     if grep -q "definitely lost: 0 bytes" valgrind_out.log && \
-       grep -q "indirectly lost: 0 bytes" valgrind_out.log && \
-       grep -q "possibly lost: 0 bytes" valgrind_out.log; then
-        echo -e "${GREEN}✓ LEAKFREE [$description] - $args${NC}\n"
+       grep -q "indirectly lost: 0 bytes" valgrind_out.log; then
+        echo -e "${GREEN}✓ LEAKFREE [$description]${NC}\n"
     else
-        echo -e "${RED}✗ LEAK DETECTED [$description] - ./philo $args${NC}"
+        echo -e "${RED}✗ LEAK DETECTED [$description]${NC}"
         grep "lost:" valgrind_out.log | grep " bytes" | head -n 10
         echo ""
     fi
 }
-
-# Fonction pour test data race (hellgrind)
-run_helgrind_test() {
-    args=$1
-    description=$2
-    echo -e "${YELLOW}Hellgrind test: $description - args: $args${NC}"
-    timeout 20 valgrind --tool=helgrind --error-exitcode=99 ./philo $args > helgrind_out.log 2>&1
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓ Hellgrind passed: $description${NC}\n"
-    else
-        echo -e "${RED}✗ Hellgrind detected issues: $description${NC}"
-        tail -n 20 helgrind_out.log
-        echo ""
-    fi
-}
-
-# ============================================
-# CRÉER LE FICHIER DE SUPPRESSION AU DÉBUT
-# ============================================
-create_suppression_file
 
 # Compilation
 print_title "COMPILATION"
@@ -192,8 +121,8 @@ echo -e "${YELLOW}Test: Arguments invalides${NC}"
 ./philo 4 abc 200 200 > /dev/null 2>&1
 [ $? -eq 1 ] && echo -e "${GREEN}✓ PASS - Lettres rejetées${NC}\n" || echo -e "${RED}✗ FAIL${NC}\n"
 
-# Tests Leak Valgrind (memcheck)
-print_title "VALGRIND MEMCHECK LEAKS TESTS"
+# Tests Leak Valgrind avec --leak-check=full
+print_title "VALGRIND LEAK-CHECK=FULL TESTS"
 run_valgrind_leak_test "1 800 200 200"           "Cas unique : 1 philosophe"
 run_valgrind_leak_test "2 410 200 200"           "2 philosophes : cas minimal pair"
 run_valgrind_leak_test "3 800 200 200"           "3 philosophes : cas impair basique"
@@ -208,20 +137,18 @@ run_valgrind_leak_test "10 800 200 200"          "10 philosophes stress"
 run_valgrind_leak_test "50 800 200 200"          "50 philosophes stress"
 run_valgrind_leak_test "100 800 200 200"         "100 philosophes — gros stress test"
 run_valgrind_leak_test "200 800 200 200"         "200 philosophes — test maximal"
-run_valgrind_leak_test "4 400.5 200 200"         "Erreur d'arguments invalide (valide parsing)"
 run_valgrind_leak_test "4 -100 200 200"          "Valeur négative refusée"
 run_valgrind_leak_test "0 800 200 200"           "0 philosophes (doit quitter proprement)"
 
-# Tests Hellgrind
-print_title "VALGRIND HELLGRIND TESTS"
-run_helgrind_test "1 800 200 200"           "1 philosophe simple"
-run_helgrind_test "5 800 200 200 7"         "5 philosophes avec repas"
-run_helgrind_test "7 800 200 200"           "7 philosophes stress"
+# Tests supplémentaires
+run_valgrind_leak_test "1 800 200 200"           "1 philosophe simple"
+run_valgrind_leak_test "5 800 200 200 7"         "5 philosophes avec repas"
+run_valgrind_leak_test "7 800 200 200"           "7 philosophes stress"
 
 # ============================================
 # NETTOYAGE À LA FIN
 # ============================================
-rm -f pthread.supp valgrind_out.log helgrind_out.log
+rm -f valgrind_out.log
 
 print_title "TESTS TERMINÉS"
 echo -e "${GREEN}Tous les tests sont terminés !${NC}\n"

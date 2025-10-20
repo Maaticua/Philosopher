@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:47 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/18 15:17:48 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/20 15:20:26 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ void	print_state(t_philo *philo, const char *msg)
 {
 	long	timestamp;
 
+	if (check_stop(philo->data))
+		return ;
 	pthread_mutex_lock(&philo->data->print_mutex);
-	if (!philo->data->stop)
-	{
-		timestamp = get_time() - philo->data->start_time;
-		printf("%ld %d %s\n", timestamp, philo->id, msg);
-	}
+	timestamp = get_time() - philo->data->start_time;
+	printf("%ld %d %s\n", timestamp, philo->id, msg);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
@@ -66,15 +65,16 @@ void	release_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
-int check_stop(t_data *data)
+int	check_stop(t_data *data)
 {
-	int result;
+	int	result;
+
 	pthread_mutex_lock(&data->stop_mutex);
 	result = data->stop;
 	pthread_mutex_unlock(&data->stop_mutex);
-	return(result);
+	return (result);
 }
-void set_stop(t_data *data, int value)
+void	set_stop(t_data *data, int value)
 {
 	pthread_mutex_lock(&data->stop_mutex);
 	data->stop = value;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maato <maato@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:29 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/18 15:24:29 by maato            ###   ########.fr       */
+/*   Updated: 2025/10/20 15:01:28 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-
 	if (philo->data->nb_philo == 1)
 	{
 		print_state(philo, "has taken a fork");
@@ -59,37 +58,32 @@ void	*philo_routine(void *arg)
 	{
 		if (check_stop(philo->data))
 			break ;
-
 		take_forks(philo);
-
 		if (check_stop(philo->data))
 		{
 			release_forks(philo);
-			break;
+			break ;
 		}
-
 		print_state(philo, "is eating");
+		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_lock(&philo->meal_mutex);
 		philo->last_meal = get_time();
+		philo->nb_meals++;
 		pthread_mutex_unlock(&philo->meal_mutex);
-		ft_usleep(philo->data->time_to_eat);
 		release_forks(philo);
 		pthread_mutex_lock(&philo->meal_mutex);
-		philo->nb_meals++;
-		if (philo->data->max_meals > 0
-			&& philo->nb_meals >= philo->data->max_meals)
+		if (philo->data->max_meals > 0 && philo->nb_meals >= philo->data->max_meals)
 		{
 			pthread_mutex_unlock(&philo->meal_mutex);
-			break ;
+			break;
 		}
 		pthread_mutex_unlock(&philo->meal_mutex);
 		if (check_stop(philo->data))
-			break;
-
+			break ;
 		print_state(philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep);
 		if (check_stop(philo->data))
-			break;
+			break ;
 		print_state(philo, "is thinking");
 	}
 	return (NULL);
