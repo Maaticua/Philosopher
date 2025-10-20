@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:32 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/20 17:07:34 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/10/20 19:21:41 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,13 @@ int						init_philos(t_data *data);
 
 // routine.c
 int						start_threads(t_data *data);
+void					*handle_single_philo(t_philo *philo);
+void					init_philo_routine(t_philo *philo);
+int						philo_eat(t_philo *philo);
+int						check_meal_limit(t_philo *philo);
+
+// routine2.c
+int						philo_sleep_think(t_philo *philo);
 void					*philo_routine(void *arg);
 
 // monitor.c
@@ -75,6 +82,8 @@ void					ft_usleep(int duration);
 void					print_state(t_philo *philo, const char *msg);
 void					take_forks(t_philo *philo);
 void					release_forks(t_philo *philo);
+
+// utils2.c
 int						check_stop(t_data *data);
 void					set_stop(t_data *data, int value);
 

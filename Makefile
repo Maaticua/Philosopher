@@ -12,7 +12,9 @@ SRC =	$(SRC_DIR)/cleanup.c	\
 		$(SRC_DIR)/monitor.c	\
 		$(SRC_DIR)/parse.c		\
 		$(SRC_DIR)/routine.c	\
+		$(SRC_DIR)/routine2.c	\
 		$(SRC_DIR)/utils.c		\
+		$(SRC_DIR)/utils2.c		\
 
 OBJ = $(SRC:.c=.o)
 

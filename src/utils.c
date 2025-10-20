@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:47 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/20 15:20:26 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/10/20 19:21:50 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,19 +64,4 @@ void	release_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
-}
-int	check_stop(t_data *data)
-{
-	int	result;
-
-	pthread_mutex_lock(&data->stop_mutex);
-	result = data->stop;
-	pthread_mutex_unlock(&data->stop_mutex);
-	return (result);
-}
-void	set_stop(t_data *data, int value)
-{
-	pthread_mutex_lock(&data->stop_mutex);
-	data->stop = value;
-	pthread_mutex_unlock(&data->stop_mutex);
 }

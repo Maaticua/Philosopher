@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 15:58:32 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/20 16:09:42 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/10/20 18:42:47 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	validate_args(t_data *data, int argc)
 	return (0);
 }
 
-static void assign_args(t_data *data, int ac, char **av)
+static void	assign_args(t_data *data, int ac, char **av)
 {
 	data->nb_philo = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
@@ -66,14 +66,14 @@ static void assign_args(t_data *data, int ac, char **av)
 	data->stop = 0;
 }
 
-int parse_args(t_data *data,int ac, char **av)
+int	parse_args(t_data *data, int ac, char **av)
 {
-	int i;
+	int	i;
 
 	if (ac != 5 && ac != 6)
 		return (1);
 	i = 1;
-	while(i < ac)
+	while (i < ac)
 	{
 		if (!is_val_nbr(av[i]))
 			return (1);
