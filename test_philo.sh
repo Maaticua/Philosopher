@@ -54,21 +54,34 @@ test_with_meals() {
 }
 
 # Fonction pour test fuite mémoire avec valgrind --leak-check=full
+# Version corrigée qui parse correctement les résultats
 run_valgrind_leak_test() {
     args=$1
     description=$2
 
     echo -e "${YELLOW}Valgrind test: $description${NC}"
 
-    timeout 20 valgrind --leak-check=full --show-leak-kinds=all \
+    timeout 20 valgrind --leak-check=full \
+        --show-leak-kinds=definite,indirect \
+        --errors-for-leak-kinds=definite,indirect \
         --error-exitcode=99 ./philo $args > valgrind_out.log 2>&1
 
-    if grep -q "definitely lost: 0 bytes" valgrind_out.log && \
-       grep -q "indirectly lost: 0 bytes" valgrind_out.log; then
+    # Parser le fichier pour extraire les valeurs
+    def_lost=$(grep "definitely lost:" valgrind_out.log | grep -oP '\d+(?= bytes)')
+    ind_lost=$(grep "indirectly lost:" valgrind_out.log | grep -oP '\d+(?= bytes)')
+
+    # Si les valeurs sont vides, considérer comme 0
+    def_lost=${def_lost:-0}
+    ind_lost=${ind_lost:-0}
+
+    # Vérifier si des fuites réelles existent
+    if [ "$def_lost" -eq 0 ] && [ "$ind_lost" -eq 0 ]; then
         echo -e "${GREEN}✓ LEAKFREE [$description]${NC}\n"
     else
         echo -e "${RED}✗ LEAK DETECTED [$description]${NC}"
-        grep "lost:" valgrind_out.log | grep " bytes" | head -n 10
+        echo -e "${YELLOW}Détails des fuites:${NC}"
+        echo -e "  definitely lost: $def_lost bytes"
+        echo -e "  indirectly lost: $ind_lost bytes"
         echo ""
     fi
 }

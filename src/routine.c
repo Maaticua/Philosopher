@@ -6,7 +6,7 @@
 /*   By: macaruan <macaruan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 14:28:29 by macaruan          #+#    #+#             */
-/*   Updated: 2025/10/20 15:01:28 by macaruan         ###   ########.fr       */
+/*   Updated: 2025/10/20 15:39:54 by macaruan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,11 @@ void	*philo_routine(void *arg)
 		pthread_mutex_unlock(&philo->meal_mutex);
 		release_forks(philo);
 		pthread_mutex_lock(&philo->meal_mutex);
-		if (philo->data->max_meals > 0 && philo->nb_meals >= philo->data->max_meals)
+		if (philo->data->max_meals > 0
+			&& philo->nb_meals >= philo->data->max_meals)
 		{
 			pthread_mutex_unlock(&philo->meal_mutex);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&philo->meal_mutex);
 		if (check_stop(philo->data))
